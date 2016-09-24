@@ -58,11 +58,11 @@ class WeixinInterface:
         # 判断中英文
         if content_u[0] >= u'\u4e00' and content_u[0] <= u'\u9fa5':
             content_8 = content_u.encode('utf-8')
-            reExpre = "\n.{2,100}" + content_8 + ".{0,200}\n"
+            reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata)
         else:
             content2 = ' '.join(content.split())
-            reExpre = "\n.{2,100} " + content2 + " .{0,200}\n"
+            reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
             allApes = re.findall(reExpre, readdata, re.I)
 
         # 回复查找的内容
