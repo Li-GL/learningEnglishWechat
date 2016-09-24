@@ -118,5 +118,5 @@ class WeixinInterface:
             else:
                 reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
-        return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
+            return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
 
