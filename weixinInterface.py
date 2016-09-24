@@ -61,8 +61,8 @@ class WeixinInterface:
             reExpre = "\n.{2,100}" + content_8 + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata)
         else:
-            content2 = ' '.join(content.split()) + ' '
-            reExpre = "\n.{2,100} " + content2 + ".{0,200}\n"
+            content2 = ' '.join(content.split())
+            reExpre = "\n.{2,100} " + content2 + " .{0,200}\n"
             allApes = re.findall(reExpre, readdata, re.I)
 
         # 回复查找的内容
