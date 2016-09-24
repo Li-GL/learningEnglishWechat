@@ -78,8 +78,8 @@ class WeixinInterface:
             reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
                       + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)\
-                      +re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
-                      + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
+                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3) \
+                      + re.findall(reExpre1, readdata2) + re.findall(reExpre1, readdata1)
         else:
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)\
