@@ -68,7 +68,7 @@ class WeixinInterface:
         # 回复查找的内容
         if allApes:
             strip_str = u'■'.encode('utf-8')
-            replies = [strip_str + "  " + i.strip('\n').strip(strip_str) for i in allApes[:6]]
+            replies = [strip_str + "  " + i.strip('\n') for i in allApes[:6]]
             reply_content = "\n\n".join(replies)
         else:
             reply_content = 'Sorry, your search didn\'t match any dictionaries'
