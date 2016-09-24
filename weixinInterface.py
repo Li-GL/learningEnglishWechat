@@ -49,9 +49,13 @@ class WeixinInterface:
         fromUser = xml.find("FromUserName").text
         toUser = xml.find("ToUserName").text
 
+        content1 = content.split()
+        content2 = ''
+        for m in content1:
+            content2 = content2 + m + ' '
         # 柯林斯英汉词典
-        with open('En-Ch CollinsCOBUILD.txt', 'r') as f:
-            readdata = f.read()
+        f = open('En-Ch CollinsCOBUILD.txt', 'r')
+        readdata = f.read()
 
         # 微信发来的content为unicode
         content_u = content
@@ -60,24 +64,31 @@ class WeixinInterface:
             content_8 = content_u.encode('utf-8')
             reExpre = "\n.{2,100}" + content_8 + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata)
-        else:
-            content2 = ' '.join(content.split())
+        # 有大写优先大写，包含小写
+        elif content_u[0] >= 'A' and content_u[0] <= 'Z':
             reExpre = "\n.{2,100} " + content2 + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata, re.I)
+            reExpre1 = "\n.{2,100} " + content2.lower() + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre1, readdata)
+        else:
+            reExpre = "\n.{2,100} " + content2 + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata)
 
         # 回复查找的内容
-        if allApes:
-            strip_str = u'■'.encode('utf-8')
-            replies = [strip_str + "  " + i.strip('\n').strip(strip_str) for i in allApes[:6]]
-            reply_content = "\n\n".join(replies)
+        strip_str = u'■'.encode('utf-8')
+        if len(allApes) > 0:
+            j = 1
+            reply_content = ""
+            for i in allApes:
+                if i[1:4] == strip_str:
+                    reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
+                    j += 1
+                else:
+                    reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
+                    j += 1
+                if j > 6:
+                    break
         else:
             reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
         return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
-
-
-
-
-
-
 
