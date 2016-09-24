@@ -72,12 +72,20 @@ class WeixinInterface:
 
         # 有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
-            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
-            reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+            if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
+                reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+                reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+            else:
+                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+                reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
             allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
                       +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
         else:
-            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+            if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
+                reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+            else:
+                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
 
         # 回复查找的内容
@@ -113,12 +121,19 @@ class WeixinInterface:
 
             # 有大写优先大写，包含小写
             elif content[0] >= 'A' and content[0] <= 'Z':
-                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
-                reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
+                if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
+                    reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+                    reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+                else:
+                    reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+                    reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
                 allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2) \
                            + re.findall(reExpre1, readdata1) + re.findall(reExpre1, readdata2)
             else:
-                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+                if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
+                    reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+                else:
+                    reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                 allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
             allApes = allApes+allApes2
             if allApes:
