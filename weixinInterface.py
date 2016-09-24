@@ -63,8 +63,8 @@ class WeixinInterface:
         return allApes
     def POST(self):
         str_xml = web.data()  # 获得post来的数据
-        xml = etree.fromstring(str_xml)  # 进行XML解析
-        content = xml.find("Content").text  # 获得用户所输入的内容
+        global xml = etree.fromstring(str_xml)  # 进行XML解析
+       global content = xml.find("Content").text  # 获得用户所输入的内容
         msgType = xml.find("MsgType").text
         fromUser = xml.find("FromUserName").text
         toUser = xml.find("ToUserName").text
