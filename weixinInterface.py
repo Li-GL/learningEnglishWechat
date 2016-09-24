@@ -73,8 +73,9 @@ class WeixinInterface:
         # 有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
             if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
-                reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
-                reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+                content_8 = content2.encode('utf-8')
+                reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
+                reExpre1 = "\n.{0,200} " + content_8.lower() + ".{0,300}\n"
             else:
                 reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                 reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
@@ -82,7 +83,8 @@ class WeixinInterface:
                       +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
         else:
             if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
-                reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+                content_8 = content2.encode('utf-8')
+                reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
             else:
                 reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
 
@@ -122,8 +124,9 @@ class WeixinInterface:
             # 有大写优先大写，包含小写
             elif content[0] >= 'A' and content[0] <= 'Z':
                 if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
-                    reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
-                    reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+                    content_8 = content2.encode('utf-8')
+                    reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
+                    reExpre1 = "\n.{0,200} " + content_8.lower() + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                     reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
@@ -131,7 +134,8 @@ class WeixinInterface:
                            + re.findall(reExpre1, readdata1) + re.findall(reExpre1, readdata2)
             else:
                 if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
-                    reExpre = "\n.{0,200} " + content2 + ".{0,300}\n"
+                    content_8 = content2.encode('utf-8')
+                    reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                 allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
