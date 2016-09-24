@@ -40,6 +40,7 @@ class WeixinInterface:
         # 如果是来自微信的请求，则回复echostr
         if hashcode == signature:
             return echostr
+    @staticmethod
     def allResult(self,readdata,readdata3):
         # 微信发来的content为unicode
         content2 = ' '.join(content.split())
