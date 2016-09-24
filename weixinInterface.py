@@ -69,17 +69,17 @@ class WeixinInterface:
         if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
             content_8 = content.encode('utf-8')
             reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata)
+            allApe = re.findall(reExpre, readdata)
 
         # 有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
             reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata) + re.findall(reExpre1, readdata)
+            allApe = re.findall(reExpre, readdata) + re.findall(reExpre1, readdata)
         else:
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
-            allApes = re.findall(reExpre, readdata)
-        return allApes
+            allApe = re.findall(reExpre, readdata)
+        return allApe
 
     def POST(self):
         str_xml = web.data()  # 获得post来的数据
@@ -102,22 +102,21 @@ class WeixinInterface:
                 else:
                     allApe3 = self.openLastDic()
                     allApes = allApes +allApe3
+            if allApes:
+                strip_str = u'■'.encode('utf-8')
+                j = 1
+                reply_content = ""
+                for i in allApes:
+                    if i[1:4] == strip_str:
+                        reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
+                        j += 1
+                    else:
+                        reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
+                        j += 1
+                    if j > 6:
+                        break
+            else:
+                reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
-        if allApes:
-            strip_str = u'■'.encode('utf-8')
-            j = 1
-            reply_content = ""
-            for i in allApes:
-                if i[1:4] == strip_str:
-                    reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
-                    j += 1
-                else:
-                    reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
-                    j += 1
-                if j > 6:
-                    break
-        else:
-            reply_content = 'Sorry, your search didn\'t match any dictionaries'
-        
         return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
 
