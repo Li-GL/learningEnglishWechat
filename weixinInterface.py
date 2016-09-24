@@ -55,29 +55,38 @@ class WeixinInterface:
 
         # 微信发来的content为unicode
         content_u = content
+        content2 = ' '.join(content.split())
         # 判断中英文
         if content_u[0] >= u'\u4e00' and content_u[0] <= u'\u9fa5':
             content_8 = content_u.encode('utf-8')
             reExpre = "\n.{2,100}" + content_8 + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata)
+        # 有大写优先大写，包含小写
+
+        elif content_u[0] >= 'A' and content_u[0] <= 'Z':
+            reExpre = "\n.{0,100} " + content2 + ".{0,200}\n"
+            reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre1, readdata)
         else:
-            content2 = ' '.join(content.split()) + ''
-            reExpre = "\n.{2,100} " + content2 + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata, re.I)
+            reExpre = "\n.{0,100} " + content2 + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata)
 
         # 回复查找的内容
-        if allApes:
-            strip_str = u'■'.encode('utf-8')
-            replies = [strip_str + "  " + i.strip('\n') for i in allApes[:6]]
-            reply_content = "\n\n".join(replies)
+        strip_str = u'■'.encode('utf-8')
+        if len(allApes) > 0:
+            j = 1
+            reply_content = ""
+            for i in allApes:
+                if i[1:4] == strip_str:
+                    reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
+                    j += 1
+                else:
+                    reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
+                    j += 1
+                if j > 6:
+                    break
         else:
             reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
         return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
-
-
-
-
-
-
 
