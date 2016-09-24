@@ -81,7 +81,7 @@ class WeixinInterface:
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
 
         # 回复查找的内容
-        if len(allApes)>=6:
+        if allApes:
             strip_str = u'■'.encode('utf-8')
             j = 1
             reply_content = ""
