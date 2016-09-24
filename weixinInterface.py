@@ -63,27 +63,26 @@ class WeixinInterface:
             readdata3 = f3.read()
 
         # 微信发来的content为unicode
-        content_u = content
+        content2 = ' '.join(content.split())
         # 判断中英文
-        if content_u[0] >= u'\u4e00' and content_u[0] <= u'\u9fa5':
-            content_8 = content_u.encode('utf-8')
+        if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
+            content_8 = content.encode('utf-8')
             reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)\
             +re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
 
         # 有大写优先大写，包含小写
-        # elif content_u[0] >= 'A' and content_u[0] <= 'Z':
-        #     reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
-        #     reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
-        #     allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
-        #               + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)\
-        #               +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3) \
-        #               + re.findall(reExpre1, readdata2) + re.findall(reExpre1, readdata1)
-        else:
-            content2 = ' '.join(content.split())
+        elif content[0] >= 'A' and content[0] <= 'Z':
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
-            allApes = re.findall(reExpre, readdata,re.I)+re.findall(reExpre, readdata3,re.I)\
-            +re.findall(reExpre, readdata2,re.I) + re.findall(reExpre, readdata1,re.I)
+            reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
+                      + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)\
+                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3) \
+                      + re.findall(reExpre1, readdata2) + re.findall(reExpre1, readdata1)
+        else:
+            reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)\
+            +re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
 
         # 回复查找的内容
         if allApes:
