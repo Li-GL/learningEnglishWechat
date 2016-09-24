@@ -41,30 +41,10 @@ class WeixinInterface:
         if hashcode == signature:
             return echostr
 
-    def allResult(self,readdata,readdata3):
-        # 微信发来的content为unicode
-        global content2,content
-        content2 = ' '.join(content.split())
-        # 判断中英文
-        if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
-            content_8 = content.encode('utf-8')
-            reExpre = "\n.{0,200}" + content_8 + ".{0,300}\n"
-            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
-
-        # 有大写优先大写，包含小写
-        elif content[0] >= 'A' and content[0] <= 'Z':
-            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
-            reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
-            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
-                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
-        else:
-            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
-            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
-        return allApes
     def POST(self):
         str_xml = web.data()  # 获得post来的数据
-        global xml = etree.fromstring(str_xml)  # 进行XML解析
-       global content = xml.find("Content").text  # 获得用户所输入的内容
+        xml = etree.fromstring(str_xml)  # 进行XML解析
+        content = xml.find("Content").text  # 获得用户所输入的内容
         msgType = xml.find("MsgType").text
         fromUser = xml.find("FromUserName").text
         toUser = xml.find("ToUserName").text
@@ -82,7 +62,24 @@ class WeixinInterface:
         with open('En-Ch_Cambridge_Advanced_Learner_Dictionary.txt', 'r') as f3:
             readdata3 = f3.read()
 
-        allApes = self.allResult(readdata,readdata3)
+        # 微信发来的content为unicode
+        content2 = ' '.join(content.split())
+        # 判断中英文
+        if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
+            content_8 = content.encode('utf-8')
+            reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
+
+        # 有大写优先大写，包含小写
+        elif content[0] >= 'A' and content[0] <= 'Z':
+            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+            reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
+                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
+        else:
+            reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
+
         # 回复查找的内容
         if allApes:
             strip_str = u'■'.encode('utf-8')
