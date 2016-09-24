@@ -81,7 +81,7 @@ class WeixinInterface:
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
 
         # 回复查找的内容
-        if allApes:
+        if len(allApes)>=6:
             strip_str = u'■'.encode('utf-8')
             j = 1
             reply_content = ""
@@ -94,7 +94,47 @@ class WeixinInterface:
                     j += 1
                 if j > 6:
                     break
+        ##############################加上另外两个字典
         else:
-            reply_content = 'Sorry, your search didn\'t match any dictionaries'
+            # 牛津英汉词典
+            with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f1:
+                readdata1 = f1.read()
+            # 朗曼
+            with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f2:
+                readdata2 = f2.read()
+
+             ###############################跟上面一样的处理
+            content2 = ' '.join(content.split())
+            # 判断中英文
+            if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
+                content_8 = content.encode('utf-8')
+                reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
+                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
+
+            # 有大写优先大写，包含小写
+            elif content[0] >= 'A' and content[0] <= 'Z':
+                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+                reExpre1 = "\n.{0,200} " + content2.lower() + ".{0,300}\n"
+                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2) \
+                           + re.findall(reExpre1, readdata1) + re.findall(reExpre1, readdata2)
+            else:
+                reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
+                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
+            allApes = allApes+allApes2
+            if allApes:
+                strip_str = u'■'.encode('utf-8')
+                j = 1
+                reply_content = ""
+                for i in allApes:
+                    if i[1:4] == strip_str:
+                        reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
+                        j += 1
+                    else:
+                        reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
+                        j += 1
+                    if j > 6:
+                        break
+            else:
+                reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
         return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
