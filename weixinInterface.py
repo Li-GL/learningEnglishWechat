@@ -52,7 +52,15 @@ class WeixinInterface:
         # 柯林斯英汉词典
         with open('En-Ch CollinsCOBUILD.txt', 'r') as f:
             readdata = f.read()
-
+        #牛津英汉词典
+        with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f1:
+            readdata1 = f1.read()
+        #朗曼
+        with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f2:
+            readdata2 = f2.read()
+        #剑桥
+        with open('En-Ch_Cambridge_Advanced_Learner_Dictionary.txt', 'r') as f3:
+            readdata3 = f3.read()
         # 微信发来的content为unicode
         content_u = content
         content2 = ' '.join(content.split())
@@ -60,16 +68,22 @@ class WeixinInterface:
         if content_u[0] >= u'\u4e00' and content_u[0] <= u'\u9fa5':
             content_8 = content_u.encode('utf-8')
             reExpre = "\n.{2,100}" + content_8 + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata)
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)\
+            +re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
+
         # 有大写优先大写，包含小写
 
         elif content_u[0] >= 'A' and content_u[0] <= 'Z':
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
             reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata) + re.findall(reExpre1, readdata)
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
+                      + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)\
+                      +re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
+                      + re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
         else:
             reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
-            allApes = re.findall(reExpre, readdata)
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)\
+            +re.findall(reExpre, readdata2) + re.findall(reExpre, readdata1)
 
         # 回复查找的内容
         strip_str = u'■'.encode('utf-8')
