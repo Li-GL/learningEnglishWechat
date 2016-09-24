@@ -72,8 +72,8 @@ class WeixinInterface:
 
         # 有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
-            reExpre = "\n.{0,100} " + content2 + ".{0,200}\n"
-            reExpre1 = "\n.{0,100} " + content2.lower() + ".{0,200}\n"
+            reExpre = "\n.{0,100} " + content2 + " .{0,200}\n"
+            reExpre1 = "\n.{0,100} " + content2.lower() + " .{0,200}\n"
             allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
                       +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
         else:
