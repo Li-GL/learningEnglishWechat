@@ -68,20 +68,20 @@ class WeixinInterface:
         if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
             content_8 = content.encode('utf-8')
             reExpre = "\n.{0,100}" + content_8 + ".{0,300}\n"
-            allApes = re.findall(reExpre, readdata3)+re.findall(reExpre, readdata)
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
 
         # 有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
             reExpre = "\n.{0,100} " + content2 + " .{0,300}\n"
             reExpre1 = "\n.{0,100} " + content2.lower() + " .{0,300}\n"
-            allApes = re.findall(reExpre, readdata3) + re.findall(reExpre, readdata) \
-                      +re.findall(reExpre1, readdata3) + re.findall(reExpre1, readdata)
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
+                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
         else:
             reExpre = "\n.{0,100} " + content2 + " .{0,300}\n"
-            allApes = re.findall(reExpre, readdata3)+re.findall(reExpre, readdata)
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
 
         # 回复查找的内容
-        if allApes:
+        if len(allApes)>=6:
             strip_str = u'■'.encode('utf-8')
             j = 1
             reply_content = ""
