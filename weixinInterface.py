@@ -140,6 +140,8 @@ class WeixinInterface:
                     reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                 allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
             allApes = allApes+allApes2
+
+            random.shuffle(allApes) #随机化输出
             if allApes:
                 strip_str = u'■'.encode('utf-8')
                 j = 1
