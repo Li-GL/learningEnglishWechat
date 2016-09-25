@@ -92,6 +92,7 @@ class WeixinInterface:
 
         # 回复查找的内容
         if len(allApes)>=6:
+            random.shuffle(allApes)  # 随机化输出
             strip_str = u'■'.encode('utf-8')
             j = 1
             reply_content = ""
@@ -141,8 +142,8 @@ class WeixinInterface:
                 allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
             allApes = allApes+allApes2
 
-            random.shuffle(allApes) #随机化输出
             if allApes:
+                random.shuffle(allApes)  # 随机化输出
                 strip_str = u'■'.encode('utf-8')
                 j = 1
                 reply_content = ""
