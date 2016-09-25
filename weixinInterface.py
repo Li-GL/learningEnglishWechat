@@ -153,7 +153,6 @@ class WeixinInterface:
                         j += 1
                     if j > 6:
                         break
-                reply_content = reply_content.rstrip('\n')
             else:
                 reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
