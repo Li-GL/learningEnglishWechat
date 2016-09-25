@@ -152,8 +152,8 @@ class WeixinInterface:
                         reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
                         j += 1
                     if j > 6:
-                        reply_content = reply_content.rstrip('\n\n')
                         break
+                reply_content = reply_content.rstrip('\n')
             else:
                 reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
