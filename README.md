@@ -7,5 +7,7 @@
 3.  支持正则输入，譬如：
 
 1)  admit.*  匹配admit, admitted等。"."匹配任意字符，"*"重复前面
+
 2)  admit.*承认  匹配admit与承认有关的例句
+
 3)  get \w*ed  匹配get married, get killed等; "\w"表任意英文字符
