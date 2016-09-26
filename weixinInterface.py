@@ -49,29 +49,28 @@ class WeixinInterface:
         fromUser = xml.find("FromUserName").text
         toUser = xml.find("ToUserName").text
 
+
+        # ------------------------------先用这两个词典，保证回复速度--------------------------------#
         # 柯林斯英汉词典
         with open('En-Ch CollinsCOBUILD.txt', 'r') as f:
             readdata = f.read()
-        #牛津英汉词典
-        # with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f1:
-        #     readdata1 = f1.read()
-        #朗曼
-        # with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f2:
-        #     readdata2 = f2.read()
-        #剑桥
-        with open('En-Ch_Cambridge_Advanced_Learner_Dictionary.txt', 'r') as f3:
-            readdata3 = f3.read()
+        #剑桥高阶
+        with open('En-Ch_Cambridge_Advanced_Learner_Dictionary.txt', 'r') as f1:
+            readdata1 = f1.read()
 
-        # 微信发来的content为unicode
+        ##################正则判断，检索##################
         content2 = ' '.join(content.split())
-        # 判断中英文
+
+        # 如果开头中文
         if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
             content_8 = content.encode('utf-8')
             reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
-            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata1)
 
-        # 有大写优先大写，包含小写
+        # 如果有大写优先大写，包含小写
         elif content[0] >= 'A' and content[0] <= 'Z':
+
+            # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
             if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
                 content_8 = content2.encode('utf-8')
                 reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
@@ -79,18 +78,21 @@ class WeixinInterface:
             else:
                 reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                 reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
-            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata3) \
-                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata3)
+            allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata1) \
+                      +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata1)
+        # 如果只有小写
         else:
+            # 如果结尾中文
             if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
                 content_8 = content2.encode('utf-8')
                 reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
             else:
                 reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
 
-            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata3)
+            #检索结果
+            allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata1)
 
-        # 回复查找的内容
+        ##################回复查找的内容##################
         if len(allApes)>=6:
             random.shuffle(allApes)  # 随机化输出
             strip_str = u'■'.encode('utf-8')
@@ -105,25 +107,29 @@ class WeixinInterface:
                     j += 1
                 if j > 6:
                     break
-        ##############################加上另外两个字典
+
+
+        #------------------------------如果上面字典搜的例句太少或没有，继续搜两个字典--------------------------------#
         else:
             # 牛津英汉词典
-            with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f1:
-                readdata1 = f1.read()
-            # 朗曼
-            with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f2:
+            with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f2:
                 readdata2 = f2.read()
+            # 朗曼
+            with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f3:
+                readdata3 = f3.read()
 
-             ###############################跟上面一样的处理
+             #######跟上面一样的处理，正则判断，检索#########
             content2 = ' '.join(content.split())
-            # 判断中英文
+            # 如果开头中文
             if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
                 content_8 = content.encode('utf-8')
                 reExpre = "\n.{0,100}" + content_8 + ".{0,200}\n"
-                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
+                allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3)
 
-            # 有大写优先大写，包含小写
+            # 如果有大写优先大写，包含小写
             elif content[0] >= 'A' and content[0] <= 'Z':
+
+                # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
                 if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
                     content_8 = content2.encode('utf-8')
                     reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
@@ -131,17 +137,23 @@ class WeixinInterface:
                 else:
                     reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
                     reExpre1 = "\n.{0,200} " + content2.lower() + " .{0,300}\n"
-                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2) \
-                           + re.findall(reExpre1, readdata1) + re.findall(reExpre1, readdata2)
+                allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3) \
+                           + re.findall(reExpre1, readdata2) + re.findall(reExpre1, readdata3)
+            #如果只有小写
             else:
+                # 如果结尾中文
                 if content2[-1] >= u'\u4e00' and content2[-1] <= u'\u9fa5':
                     content_8 = content2.encode('utf-8')
                     reExpre = "\n.{0,200} " + content_8 + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + content2 + " .{0,300}\n"
-                allApes2 = re.findall(reExpre, readdata1) + re.findall(reExpre, readdata2)
+                # 检索结果
+                allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3)
+
+            # 合并检索结果
             allApes = allApes+allApes2
 
+            ##################回复查找的内容##################
             if allApes:
                 random.shuffle(allApes)  # 随机化输出
                 strip_str = u'■'.encode('utf-8')
