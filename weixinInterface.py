@@ -118,7 +118,7 @@ class WeixinInterface:
             with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f3:
                 readdata3 = f3.read()
 
-             #######跟上面一样的处理，正则判断，检索#########
+            ##################正则判断，检索##################
             content2 = ' '.join(content.split())
             # 如果开头中文
             if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
