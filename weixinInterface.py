@@ -95,18 +95,9 @@ class WeixinInterface:
         ##################回复查找的内容##################
         if len(allApes)>=6:
             random.shuffle(allApes)  # 随机化输出
-            strip_str = u'■'.encode('utf-8')
-            j = 1
-            reply_content = ""
-            for i in allApes:
-                if i[1:4] == strip_str:
-                    reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
-                    j += 1
-                else:
-                    reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
-                    j += 1
-                if j > 6:
-                    break
+            strip_str = '■'
+            replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in allApes[:6]]
+            reply_content = "\n\n".join(replies)
 
 
         #------------------------------如果上面字典搜的例句太少或没有，继续搜两个字典--------------------------------#
@@ -155,19 +146,12 @@ class WeixinInterface:
 
             ##################回复查找的内容##################
             if allApes:
+
                 random.shuffle(allApes)  # 随机化输出
-                strip_str = u'■'.encode('utf-8')
-                j = 1
-                reply_content = ""
-                for i in allApes:
-                    if i[1:4] == strip_str:
-                        reply_content = reply_content + strip_str + "  " + i.strip('\n').strip(strip_str) + '\n\n'
-                        j += 1
-                    else:
-                        reply_content = reply_content + strip_str + "  " + i.strip('\n') + '\n\n'
-                        j += 1
-                    if j > 6:
-                        break
+                strip_str = '■'
+                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in allApes[:6]]
+                reply_content = "\n\n".join(replies)
+
             else:
                 reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
