@@ -52,7 +52,7 @@ class WeixinInterface:
         if msgType =="event":
             msg = xml.find('Event').text
             if msg =="subscribe":
-            return self.render.reply_text(fromUser,toUser,int(time.time()),u"""■ 精选柯林斯高阶、牛津高阶、剑桥高阶和朗曼当代四部权威字典例句\n"
+                return self.render.reply_text(fromUser,toUser,int(time.time()),u"""■ 精选柯林斯高阶、牛津高阶、剑桥高阶和朗曼当代四部权威字典例句\n"
                                                                                 ■ 发送中英文词组即可获得相关的例句\n"
                                                                                 ■ 随机返回6句如果没有想要的，再发一遍试试\n"
                                                                                 ■ 支持正则输入，譬如：\n\  1)  admit.*  匹配admit, admitted等。"."匹配任意字符，"*"重复前面\n\
