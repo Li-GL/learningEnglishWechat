@@ -53,7 +53,7 @@ class WeixinInterface:
 
             msg = xml.find('Event').text
             if msg =="subscribe":
-                return self.render.reply_text(fromUser,toUser,int(time.time()), u"■ 发送中英文词组或单词即可获得相关的例句\n■ 随机返回6句，如果没有想要的，再发送一遍\n\
+                return self.render.reply_text(fromUser,toUser,int(time.time()), u"■ 发送中英文词组或单词即可获得相应的权威例句\n■ 随机返回6句，如果没有想要的，再发送一遍\n\
 ■ 支持正则输入，譬如：\n    1)  admit.*   匹配admit, admitted等。“.”匹配任意字符，“*”重复前面\n\
     2)  admit.*承认   匹配admit与承认有关的例句\n    3)  get \w*ed   匹配get married, get killed等; “\w”表任意英文字符")
 
