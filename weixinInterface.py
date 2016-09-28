@@ -42,8 +42,8 @@ class WeixinInterface:
             return echostr
 
     def POST(self):
-        str_xml = web.data()  # 获得post来的数据
-        xml = etree.fromstring(str_xml)  # 进行XML解析
+        data = web.data()  # 获得post来的数据
+        xml = etree.fromstring(data)  # 进行XML解析
         content = xml.find("Content").text  # 获得用户所输入的内容
         msgType = xml.find("MsgType").text
         fromUser = xml.find("FromUserName").text
@@ -59,12 +59,11 @@ class WeixinInterface:
             readdata1 = f1.read()
 
         ##################正则判断，检索##################
-        contentFinal = ' '.join(content.split())
+        contentFinal = ' '.join(content.split()).encode('utf-8')
 
         # 如果开头中文
         if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
-            contentUTF_8 = content.encode('utf-8')
-            reExpre = "\n.{0,100}" + contentUTF_8 + ".{0,200}\n"
+            reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
             allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata1)
 
         # 如果有大写优先大写，包含小写
@@ -72,9 +71,8 @@ class WeixinInterface:
 
             # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
             if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
-                contentUTF_8 = contentFinal.encode('utf-8')
-                reExpre = "\n.{0,200} " + contentUTF_8 + ".{0,300}\n"
-                reExpre1 = "\n.{0,200} " + contentUTF_8.lower() + ".{0,300}\n"
+                reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
+                reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
             else:
                 reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                 reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
@@ -84,8 +82,7 @@ class WeixinInterface:
         else:
             # 如果结尾中文
             if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
-                contentUTF_8 = contentFinal.encode('utf-8')
-                reExpre = "\n.{0,200} " + contentUTF_8 + ".{0,300}\n"
+                reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
             else:
                 reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
 
@@ -110,11 +107,10 @@ class WeixinInterface:
                 readdata3 = f3.read()
 
             ##################正则判断，检索##################
-            contentFinal = ' '.join(content.split())
+            contentFinal = ' '.join(content.split()).encode('utf-8')
             # 如果开头中文
             if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
-                contentUTF_8 = content.encode('utf-8')
-                reExpre = "\n.{0,100}" + contentUTF_8 + ".{0,200}\n"
+                reExpre = "\n.{0,100}" + contentFinal + ".{0,200}\n"
                 allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3)
 
             # 如果有大写优先大写，包含小写
@@ -122,9 +118,8 @@ class WeixinInterface:
 
                 # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
                 if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
-                    contentUTF_8 = contentFinal.encode('utf-8')
-                    reExpre = "\n.{0,200} " + contentUTF_8 + ".{0,300}\n"
-                    reExpre1 = "\n.{0,200} " + contentUTF_8.lower() + ".{0,300}\n"
+                    reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
+                    reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                     reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
@@ -134,8 +129,7 @@ class WeixinInterface:
             else:
                 # 如果结尾中文
                 if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
-                    contentUTF_8 = contentFinal.encode('utf-8')
-                    reExpre = "\n.{0,200} " + contentUTF_8 + ".{0,300}\n"
+                    reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                 # 检索结果
