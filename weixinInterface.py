@@ -80,7 +80,7 @@ class WeixinInterface:
             elif content[0] >= 'A' and content[0] <= 'Z':
 
                 # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
-                if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
+                if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                     reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                     reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
                 else:
@@ -91,7 +91,7 @@ class WeixinInterface:
             # 如果只有小写
             else:
                 # 如果结尾中文
-                if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
+                if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                     reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                 else:
                     reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
@@ -127,7 +127,7 @@ class WeixinInterface:
                 elif content[0] >= 'A' and content[0] <= 'Z':
 
                     # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
-                    if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
+                    if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
                     else:
@@ -138,7 +138,7 @@ class WeixinInterface:
                 #如果只有小写
                 else:
                     # 如果结尾中文
-                    if contentFinal[-1] >= u'\u4e00' and contentFinal[-1] <= u'\u9fa5':
+                    if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                     else:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
