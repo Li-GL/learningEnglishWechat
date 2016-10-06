@@ -44,13 +44,11 @@ class WeixinInterface:
     def POST(self):
         data = web.data()  # 获得post来的数据
         xml = etree.fromstring(data)  # 进行XML解析
-
         msgType = xml.find("MsgType").text
         fromUser = xml.find("FromUserName").text
         toUser = xml.find("ToUserName").text
 
         if msgType =="event":
-
             msg = xml.find('Event').text
             if msg =="subscribe":
                 return self.render.reply_text(fromUser,toUser,int(time.time()), u"■ 发送中英文词组或单词即可获得相应的权威例句\n■ 随机返回6句，如果没有想要的，再发送一遍\n\
@@ -58,30 +56,25 @@ class WeixinInterface:
     2)  admit.*承认   匹配admit与承认有关的例句\n    3)  get \w*ed   匹配get married, get killed等; “\w”表任意英文字符")
 
         if msgType=="text":
-
             content = xml.find("Content").text  # 获得用户所输入的内容
 
             with open('Dictionaries.txt', 'r') as f:
                 dic = f.readlines()
 
             readData = ''
-
             for i in dic:
                 with open(i.strip('\n'),'r') as d:
                     readData = readData + d.read()
 
-                # 如果开头中文
                 contentFinal = ' '.join(content.split()).encode('utf-8')
-
+                # 如果开头中文
                 if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
                     
                     reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
                     replyData = re.findall(reExpre, readData)
 
-            # 如果有大写优先大写，包含小写
                 elif content[0] >= 'A' and content[0] <= 'Z':
-
-                # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
+                # 如果结尾中文
                     if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
@@ -98,14 +91,11 @@ class WeixinInterface:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                     replyData = re.findall(reExpre, readData)
 
-            ##################回复查找的内容##################
                 if len(replyData) >=6:
                     break
-                # else:
-                #     break
-
+            ##################回复查找的内容##################
             if replyData:
-                random.shuffle(replyData)  # 随机化输出
+                random.shuffle(replyData)  # 随机输出
                 strip_str = '■'
                 replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in replyData[:6]]
                 reply_content = "\n\n".join(replies)
