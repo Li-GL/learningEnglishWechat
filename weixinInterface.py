@@ -101,13 +101,13 @@ class WeixinInterface:
             ##################回复查找的内容##################
                 if len(replyData) <=6:
                     continue
-                
-                if replyData:
-                    random.shuffle(replyData)  # 随机化输出
-                    strip_str = '■'
-                    replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in replyData[:6]]
-                    reply_content = "\n\n".join(replies)
-                else:
-                    reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
-                return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
+            if replyData:
+                random.shuffle(replyData)  # 随机化输出
+                strip_str = '■'
+                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in replyData[:6]]
+                reply_content = "\n\n".join(replies)
+            else:
+                reply_content = 'Sorry, your search didn\'t match any dictionaries'
+
+            return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
