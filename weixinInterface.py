@@ -65,7 +65,7 @@ class WeixinInterface:
                 dic = f.readlines()
 
             readData = []
-            replyData = []
+            # replyData = []
             for i in dic:
                 with open(i.strip('\n'),'r') as d:
                     readData = readData + d.read()
@@ -101,12 +101,12 @@ class WeixinInterface:
                 if len(replyData)>=6:
                     break
                 
-            if replyData:
+            # if replyData:
                 random.shuffle(replyData)  # 随机化输出
                 strip_str = '■'
                 replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in replyData[:6]]
                 reply_content = "\n\n".join(replies)
-            else:
-                reply_content = 'Sorry, your search didn\'t match any dictionaries'
+            # else:
+            #     reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
-            return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
+                return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
