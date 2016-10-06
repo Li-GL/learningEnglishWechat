@@ -99,10 +99,10 @@ class WeixinInterface:
                     replyData = re.findall(reExpre, readData)
 
             ##################回复查找的内容##################
-                if len(replyData) <=6:
-                    continue
-                else:
+                if len(replyData) >=6:
                     break
+                # else:
+                #     break
 
             if replyData:
                 random.shuffle(replyData)  # 随机化输出
