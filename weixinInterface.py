@@ -65,7 +65,7 @@ class WeixinInterface:
                 dic = f.readlines()
 
             readData = ''
-            # replyData = []
+
             for i in dic:
                 with open(i.strip('\n'),'r') as d:
                     readData = readData + d.read()
@@ -89,7 +89,7 @@ class WeixinInterface:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
                     replyData = re.findall(reExpre, readData) + re.findall(reExpre1, readData)
-                # 如果只有小写
+
                 else:
                     # 如果结尾中文
                     if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
