@@ -101,6 +101,8 @@ class WeixinInterface:
             ##################回复查找的内容##################
                 if len(replyData) <=6:
                     continue
+                else:
+                    break
 
             if replyData:
                 random.shuffle(replyData)  # 随机化输出
