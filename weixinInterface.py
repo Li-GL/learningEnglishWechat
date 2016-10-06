@@ -65,6 +65,7 @@ class WeixinInterface:
                 dic = f.readlines()
 
             readData = []
+            replyData = []
             for i in dic:
                 with open(i.strip('\n'),'r') as d:
                     readData = readData + d.read()
@@ -74,7 +75,7 @@ class WeixinInterface:
                 if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
                     
                     reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
-                    self.replyData = re.findall(reExpre, readData)
+                    replyData = re.findall(reExpre, readData)
 
             # 如果有大写优先大写，包含小写
                 elif content[0] >= 'A' and content[0] <= 'Z':
@@ -86,7 +87,7 @@ class WeixinInterface:
                     else:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
-                    self.replyData = re.findall(reExpre, readData) + re.findall(reExpre1, readData)
+                    replyData = re.findall(reExpre, readData) + re.findall(reExpre1, readData)
                 # 如果只有小写
                 else:
                     # 如果结尾中文
@@ -94,16 +95,16 @@ class WeixinInterface:
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                     else:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
-                    self.replyData = re.findall(reExpre, readData)
+                    replyData = re.findall(reExpre, readData)
 
             ##################回复查找的内容##################
-                if len(self.replyData)>=6:
+                if len(replyData)>=6:
                     break
                 
-            if self.replyData:
-                random.shuffle(self.replyData)  # 随机化输出
+            if replyData:
+                random.shuffle(replyData)  # 随机化输出
                 strip_str = '■'
-                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in self.replyData[:6]]
+                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in replyData[:6]]
                 reply_content = "\n\n".join(replies)
             else:
                 reply_content = 'Sorry, your search didn\'t match any dictionaries'
