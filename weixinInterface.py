@@ -72,6 +72,7 @@ class WeixinInterface:
 
                 # 如果开头中文
                 contentFinal = ' '.join(content.split()).encode('utf-8')
+
                 if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
                     
                     reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
@@ -98,8 +99,8 @@ class WeixinInterface:
                     replyData = re.findall(reExpre, readData)
 
             ##################回复查找的内容##################
-                if len(replyData)>=6:
-                    break
+                if len(replyData) <=6:
+                    continue
                 
             # if replyData:
                 random.shuffle(replyData)  # 随机化输出
