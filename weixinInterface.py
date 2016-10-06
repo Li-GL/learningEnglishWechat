@@ -64,7 +64,7 @@ class WeixinInterface:
             with open('Dictionaries.txt', 'r') as f:
                 dic = f.readlines()
 
-            readData = []
+            readData = ''
             # replyData = []
             for i in dic:
                 with open(i.strip('\n'),'r') as d:
