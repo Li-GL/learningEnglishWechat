@@ -60,103 +60,52 @@ class WeixinInterface:
         if msgType=="text":
 
             content = xml.find("Content").text  # 获得用户所输入的内容
-            # ------------------------------先用这两个词典，保证回复速度--------------------------------#
-            # 柯林斯英汉词典
-            with open('En-Ch CollinsCOBUILD.txt', 'r') as f:
-                readdata = f.read()
-            #剑桥高阶
-            with open('En-Ch_Cambridge_Advanced_Learner_Dictionary.txt', 'r') as f1:
-                readdata1 = f1.read()
 
-            ##################正则判断，检索##################
-            contentFinal = ' '.join(content.split()).encode('utf-8')
+            with open('Dictionaries.txt', 'r') as f:
+                dic = f.readlines()
 
-            # 如果开头中文
-            if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
-                reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
-                allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata1)
+            readData = []
+            for i in dic:
+                with open(i.strip('\n'),'r') as d:
+                    readData = readData + d.read()
+
+                # 如果开头中文
+                contentFinal = ' '.join(content.split()).encode('utf-8')
+                if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
+                    
+                    reExpre = "\n.{0,200}" + contentFinal + ".{0,300}\n"
+                    self.replyData = re.findall(reExpre, readData)
 
             # 如果有大写优先大写，包含小写
-            elif content[0] >= 'A' and content[0] <= 'Z':
-
-                # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
-                if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
-                    reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
-                    reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
-                else:
-                    reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
-                    reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
-                allApes = re.findall(reExpre, readdata) + re.findall(reExpre, readdata1) \
-                          +re.findall(reExpre1, readdata) + re.findall(reExpre1, readdata1)
-            # 如果只有小写
-            else:
-                # 如果结尾中文
-                if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
-                    reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
-                else:
-                    reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
-
-                #检索结果
-                allApes = re.findall(reExpre, readdata)+re.findall(reExpre, readdata1)
-
-            ##################回复查找的内容##################
-            if len(allApes)>=6:
-                random.shuffle(allApes)  # 随机化输出
-                strip_str = '■'
-                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in allApes[:6]]
-                reply_content = "\n\n".join(replies)
-
-
-            #------------------------------如果上面字典搜的例句太少或没有，继续搜两个字典--------------------------------#
-            else:
-                # 牛津英汉词典
-                with open('En-Ch_Oxford_Advanced_Leaner_Dictionary.txt', 'r') as f2:
-                    readdata2 = f2.read()
-                # 朗曼
-                with open('En-Ch_Longman_Dictionary_of_Contemporary_English.txt', 'r') as f3:
-                    readdata3 = f3.read()
-
-                ##################正则判断，检索##################
-                contentFinal = ' '.join(content.split()).encode('utf-8')
-                # 如果开头中文
-                if content[0] >= u'\u4e00' and content[0] <= u'\u9fa5':
-                    reExpre = "\n.{0,100}" + contentFinal + ".{0,200}\n"
-                    allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3)
-
-                # 如果有大写优先大写，包含小写
                 elif content[0] >= 'A' and content[0] <= 'Z':
 
-                    # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
+                # 如果结尾中文，用在  admit.*承认 这样的正则输入，注意正则表达式 ".{0,300}\n" 比英文少了一个空格
                     if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + ".{0,300}\n"
                     else:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
                         reExpre1 = "\n.{0,200} " + contentFinal.lower() + " .{0,300}\n"
-                    allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3) \
-                               + re.findall(reExpre1, readdata2) + re.findall(reExpre1, readdata3)
-                #如果只有小写
+                    self.replyData = re.findall(reExpre, readData) + re.findall(reExpre1, readData)
+                # 如果只有小写
                 else:
                     # 如果结尾中文
                     if content[-1] >= u'\u4e00' and content[-1] <= u'\u9fa5':
                         reExpre = "\n.{0,200} " + contentFinal + ".{0,300}\n"
                     else:
                         reExpre = "\n.{0,200} " + contentFinal + " .{0,300}\n"
-                    # 检索结果
-                    allApes2 = re.findall(reExpre, readdata2) + re.findall(reExpre, readdata3)
+                    self.replyData = re.findall(reExpre, readData)
 
-                # 合并检索结果
-                allApes = allApes+allApes2
-
-                ##################回复查找的内容##################
-                if allApes:
-
-                    random.shuffle(allApes)  # 随机化输出
-                    strip_str = '■'
-                    replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in allApes[:6]]
-                    reply_content = "\n\n".join(replies)
-
-                else:
-                    reply_content = 'Sorry, your search didn\'t match any dictionaries'
+            ##################回复查找的内容##################
+                if len(self.replyData)>=6:
+                    break
+                
+            if self.replyData:
+                random.shuffle(self.replyData)  # 随机化输出
+                strip_str = '■'
+                replies = [strip_str + "  " + re.sub('^■', '', i.strip('\n')) for i in self.replyData[:6]]
+                reply_content = "\n\n".join(replies)
+            else:
+                reply_content = 'Sorry, your search didn\'t match any dictionaries'
 
             return self.render.reply_text(fromUser, toUser, int(time.time()), reply_content)
